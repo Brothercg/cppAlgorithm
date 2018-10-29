@@ -2,6 +2,9 @@
 #include "SortTestHelper.h"
 #include "Student.h"
 
+
+//所有排序按照从小到大排序。
+
 using namespace std;
 
 template <typename T>
@@ -55,23 +58,62 @@ void insertionSortImprove(T arr[], int n) {
  * Bubble Sort
  */
 
+template <typename T>
+void bubbleSort(T arr[], int n) {
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n - i - 1; j++){
+            if(arr[j] > arr[j+1])
+                swap(arr[j], arr[j+1]);
+        }
+    }
+}
+
 /**
- * Shell sort
+ * Shell sort: 按照步长进行插入排序。
  */
 
+template <typename T>
+void shellSort(T arr[], int n) {
+    int step = (n-1)/2;
+
+    while (step > 0){
+
+//        cout << "Step: "  << step  << endl;
+        for(int i = step ; i < n  ; i ++){
+            for(int j = i; j >= step; j -= step){
+                if(arr[j] < arr[j - step]){
+//                    cout << "swap " << j << "---" << j - step << endl;
+                    swap(arr[j], arr[j - step]);
+                }
+                else
+                    break;
+            }
+
+        }
+
+        step = step / 2;
+    }
+}
 
 int main() {
 
 
-    int n = 10000;
-    int *arr = SortTestHelper::generateNearlyOrderedArray(n,100);
+    int n = 1000;
+    int *arr = SortTestHelper::generateRandomArray(n, 0, 2000);
     int *arr2 = SortTestHelper::copyIntArray(arr,n);
     int *arr3 = SortTestHelper::copyIntArray(arr,n);
+    int *arr4 = SortTestHelper::copyIntArray(arr,n);
+    int *arr5 = SortTestHelper::copyIntArray(arr,n);
+
+
+    SortTestHelper::printArray(arr,n);
 
     //The test of selection Sort
     SortTestHelper::testSort("Selection Sort", selectionSort, arr, n);
     SortTestHelper::testSort("Insertion Sort", insertionSort, arr2, n);
     SortTestHelper::testSort("insertionImprove Sort", insertionSortImprove, arr3, n);
+    SortTestHelper::testSort("Bubble Sort: ", bubbleSort, arr4, n);
+    SortTestHelper::testSort("Shell Sort: ", shellSort, arr5, n);
 
 
     // The custom structure test in selectionSort.
@@ -79,6 +121,9 @@ int main() {
 //    selectionSort(stu, 4);
 //    for(int i = 0; i < 4; i++)
 //        cout << stu[i];
+
+
+
 
 
 
