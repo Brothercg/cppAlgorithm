@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/**
+ * 选择排序
+ * */
+
 template <typename T>
 void  selectionSort(T arr[], int n) {
 
@@ -21,6 +25,9 @@ void  selectionSort(T arr[], int n) {
     }
 }
 
+/**
+ * 插入排序
+ * */
 template <typename T>
 void insertionSort(T arr[], int n) {
     for(int i = 1; i < n; i++){
@@ -95,18 +102,73 @@ void shellSort(T arr[], int n) {
     }
 }
 
+/**
+ * 归并排序
+ * */
+
+template <typename T>
+void __merge(T arr[], int l, int mid, int r) {
+
+    //copy the arr to aux
+    T aux[r - l + 1];
+    for(int i = l; i <= r; i++)
+        aux[i - l] = arr[i];
+
+    int i = l, j = mid + 1;
+    for(int k = i; k <= r; k++) {
+
+        if( i > mid){
+            arr[k] = aux[j - l];
+            j++;
+        }
+
+        else if( j > r ){
+            arr[k] = aux[i - l];
+            i++;
+        }
+
+        else if( aux[i - l] <  aux[j - l]) {
+            arr[k] = aux[i - l];
+            i++;
+        }else{
+            arr[k] = aux[j - l];
+            j++;
+        }
+    }
+}
+
+//递归使用归并排序，对arr[l...r]的范围使用归并排序。r是最后一个元素的位置，不是最后元素的位置。
+template <typename T>
+void __mergeSort(T arr[], int l, int r){
+
+    //处理递归到低的情况
+    if(l >= r)
+        return;
+
+    int mid = (l+r)/2;
+    __mergeSort(arr, l, mid);
+    __mergeSort(arr, mid + 1, r);
+    __merge(arr, l, mid, r);
+}
+
+template <typename T>
+void  mergeSort(T arr[], int n){
+    __mergeSort(arr, 0, n-1);
+}
+
 int main() {
 
 
-    int n = 1000;
-    int *arr = SortTestHelper::generateRandomArray(n, 0, 2000);
+    int n = 50000;
+    int *arr = SortTestHelper::generateRandomArray(n, 0, 100000);
     int *arr2 = SortTestHelper::copyIntArray(arr,n);
     int *arr3 = SortTestHelper::copyIntArray(arr,n);
     int *arr4 = SortTestHelper::copyIntArray(arr,n);
     int *arr5 = SortTestHelper::copyIntArray(arr,n);
+    int *arr6 = SortTestHelper::copyIntArray(arr,n);
 
 
-    SortTestHelper::printArray(arr,n);
+//    SortTestHelper::printArray(arr,n);
 
     //The test of selection Sort
     SortTestHelper::testSort("Selection Sort", selectionSort, arr, n);
@@ -114,6 +176,7 @@ int main() {
     SortTestHelper::testSort("insertionImprove Sort", insertionSortImprove, arr3, n);
     SortTestHelper::testSort("Bubble Sort: ", bubbleSort, arr4, n);
     SortTestHelper::testSort("Shell Sort: ", shellSort, arr5, n);
+    SortTestHelper::testSort("Merge Sort: ", mergeSort, arr6, n);
 
 
     // The custom structure test in selectionSort.
@@ -123,11 +186,12 @@ int main() {
 //        cout << stu[i];
 
 
-
-
-
-
     delete[](arr);
     delete[](arr2);
+    delete[](arr3);
+    delete[](arr4);
+    delete[](arr5);
+    delete[](arr6);
+
     return 0;
 }
