@@ -26,7 +26,7 @@ void  selectionSort(T arr[], int n) {
 }
 
 /**
- * 插入排序
+ * insert Sort
  * */
 template <typename T>
 void insertionSort(T arr[], int n) {
@@ -115,13 +115,16 @@ void __merge(T arr[], int l, int mid, int r) {
         aux[i - l] = arr[i];
 
     int i = l, j = mid + 1;
+
     for(int k = i; k <= r; k++) {
 
+        //左侧已经遍历完了
         if( i > mid){
             arr[k] = aux[j - l];
             j++;
         }
 
+        //右侧已经遍历完了
         else if( j > r ){
             arr[k] = aux[i - l];
             i++;
