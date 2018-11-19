@@ -60,6 +60,10 @@ namespace SortTestHelper{
         return arr;
     }
 
+    /**
+     * n ：产生数组大小
+     * swapTimes : 调换顺序的数组对数
+     * */
     int* generateNearlyOrderedArray(int n, int swapTimes) {
         int *arr = new int[n];
         for(int i = 0; i < n; i++)
