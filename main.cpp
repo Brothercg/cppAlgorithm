@@ -247,8 +247,8 @@ void  improveMergeSort_2(T arr[], int n){
  * 优点：
  *      1、没有使用数组的下标，所以可以用nlog(n)的复杂度来处理类似链表的问题。
  * */
- template <typename T>
- void mergeSortBU(T arr[], int n){
+template <typename T>
+void mergeSortBU(T arr[], int n){
      for(int size = 1; size <= n; size += size )
          //确保i + size不会越界。
          for(int i = 0; i + size < n; i += size + size)
@@ -257,36 +257,123 @@ void  improveMergeSort_2(T arr[], int n){
  }
 
 
+ /**
+  * 快速排序
+  * */
+
+template <typename T>
+
+
+//对arr[l...r]部分进行partition操作
+//返回p，使得arr[l...p-1] <= arr[p] <= arr[p+1...r]
+int __partition(T arr[], int l, int r){
+
+    T v = arr[l];
+
+    //arr[l+1...j] <= v ; arr[j+1...i) >= v
+    int j = l;
+    for( int i = l ; i <= r; i++){
+        if( arr[i] < v) {
+            swap( arr[j+1] , arr[i]);
+            j ++;
+        }
+    }
+
+    swap( arr[l] , arr[j] );
+
+    return j;
+}
+
+ //对arr[l...r]部分进行快速排序
+template <typename T>
+void __quickSort(T arr[], int l, int r) {
+
+    if(l >= r)
+        return;
+
+    int p = __partition(arr, l, r);
+    __quickSort(arr, l, p-1);
+    __quickSort(arr, p+1, r);
+}
+
+template <typename  T>
+void quickSort(T arr[], int n){
+    __quickSort(arr, 0, n-1);
+}
+
+
+
+/**
+  * 选择随机元素用于划分的快速排序,目的在于让快速排序在近乎有序的数据面前也能有一个很好的效果。
+  * */
+
+template <typename T>
+
+
+//对arr[l...r]部分进行partition操作
+//返回p，使得arr[l...p-1] <= arr[p] <= arr[p+1...r]
+int __partitionImprove_1(T arr[], int l, int r){
+
+    swap(arr[l] ,arr[rand()%(r-l+1)+l]);
+    T v = arr[l];
+
+    //arr[l+1...j] <= v ; arr[j+1...i) >= v
+    int j = l;
+    for( int i = l ; i <= r; i++){
+        if( arr[i] < v) {
+            swap( arr[j+1] , arr[i]);
+            j ++;
+        }
+    }
+
+    swap( arr[l] , arr[j] );
+
+    return j;
+}
+
+
+template <typename  T>
+void quickSortImprove_1(T arr[], int n){
+    srand(time(NULL));
+    __quickSort(arr, 0, n-1);
+}
+
+
+//看到第三章6-9 14min 了
 
 
 int main() {
 
 
-    int n = 50000;
-    int *arr = SortTestHelper::generateRandomArray(n, 0, 100000);
+    int n = 1000000;
+    int *arr = SortTestHelper::generateRandomArray(n, 0, 10);
 //    int *arr = SortTestHelper::generateNearlyOrderedArray(n, 10);
-    int *arr2 = SortTestHelper::copyIntArray(arr,n);
-    int *arr3 = SortTestHelper::copyIntArray(arr,n);
-    int *arr4 = SortTestHelper::copyIntArray(arr,n);
-    int *arr5 = SortTestHelper::copyIntArray(arr,n);
+//    int *arr2 = SortTestHelper::copyIntArray(arr,n);
+//    int *arr3 = SortTestHelper::copyIntArray(arr,n);
+//    int *arr4 = SortTestHelper::copyIntArray(arr,n);
+//    int *arr5 = SortTestHelper::copyIntArray(arr,n);
     int *arr6 = SortTestHelper::copyIntArray(arr,n);
-    int *arr7 = SortTestHelper::copyIntArray(arr,n);
-    int *arr8 = SortTestHelper::copyIntArray(arr,n);
-    int *arr9 = SortTestHelper::copyIntArray(arr,n);
+//    int *arr7 = SortTestHelper::copyIntArray(arr,n);
+//    int *arr8 = SortTestHelper::copyIntArray(arr,n);
+//    int *arr9 = SortTestHelper::copyIntArray(arr,n);
+    int *arr10 = SortTestHelper::copyIntArray(arr,n);
+//    int *arr11 = SortTestHelper::copyIntArray(arr,n);
 
 
 //    SortTestHelper::printArray(arr,n);
 
     //The test of selection Sort
-    SortTestHelper::testSort("Selection Sort", selectionSort, arr, n);
-    SortTestHelper::testSort("Insertion Sort", insertionSort, arr2, n);
-    SortTestHelper::testSort("InsertionImprove Sort", insertionSortImprove, arr3, n);
-    SortTestHelper::testSort("Bubble Sort: ", bubbleSort, arr4, n);
-    SortTestHelper::testSort("Shell Sort: ", shellSort, arr5, n);
+//    SortTestHelper::testSort("Selection Sort", selectionSort, arr, n);
+//    SortTestHelper::testSort("Insertion Sort", insertionSort, arr2, n);
+//    SortTestHelper::testSort("InsertionImprove Sort", insertionSortImprove, arr3, n);
+//    SortTestHelper::testSort("Bubble Sort: ", bubbleSort, arr4, n);
+//    SortTestHelper::testSort("Shell Sort: ", shellSort, arr5, n);
     SortTestHelper::testSort("Merge Sort: ", mergeSort, arr6, n);
-    SortTestHelper::testSort("Improved Merge Sort 1: ", improveMergeSort_1, arr7, n);
-    SortTestHelper::testSort("Improved Merge Sort 2: ", improveMergeSort_2, arr8, n);
-    SortTestHelper::testSort("mergeSortBU: ", mergeSortBU, arr9, n);
+//    SortTestHelper::testSort("Improved Merge Sort 1: ", improveMergeSort_1, arr7, n);
+//    SortTestHelper::testSort("Improved Merge Sort 2: ", improveMergeSort_2, arr8, n);
+//    SortTestHelper::testSort("mergeSortBU: ", mergeSortBU, arr9, n);
+    SortTestHelper::testSort("QuickSort: ", quickSort, arr10, n);
+//    SortTestHelper::testSort("Improved QuickSort 1: ", quickSort, arr11, n);
 
     // The custom structure test in selectionSort.
 //    Student stu[4] = { {"D",90} , {"C",100} , {"B",95} , {"A", 95} };
@@ -296,11 +383,15 @@ int main() {
 
 
     delete[](arr);
-    delete[](arr2);
-    delete[](arr3);
-    delete[](arr4);
-    delete[](arr5);
+//    delete[](arr2);
+//    delete[](arr3);
+//    delete[](arr4);
+//    delete[](arr5);
     delete[](arr6);
+//    delete[](arr7);
+//    delete[](arr8);
+//    delete[](arr9);
+    delete[](arr10);
 
     return 0;
 }
